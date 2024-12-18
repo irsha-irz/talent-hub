@@ -1,0 +1,229 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://kit.fontawesome.com/cb792c0850.js" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <title>Social Media</title>
+    <link rel="stylesheet" href="{% static 'css/app.css' %}">
+    <style>
+        /* Custom styles for the sidebar */
+        .sidebar {
+            background-color: #f8f9fa;
+            height: 100vh;
+            color: black;
+        }
+
+        .profile-pic {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        a {
+            color: black;
+        }
+
+        .star {
+            font-size: 24px;
+            color: silver;
+            cursor: pointer;
+        }
+
+        .star.selected {
+            color: gold;
+        }
+    </style>
+</head>
+
+<body>
+   <!-- this a modal code -->
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 d-none d-md-block sidebar" style="position: fixed;">
+            <div class="text-center mt-3">
+                <img src="{{profile.profileimg.url}}" alt="Profile Picture" class="profile-pic">
+                <h4 class="mt-2"><a href="/profile/{{user}}" style="text-decoration:none;">@{{user}}</a></h4>
+            </div>
+            <ul class="nav flex-column mt-4">
+                <li class="nav-item">
+                    <a class="nav-link active" href="/">
+                        <i class="fa-solid fa-house mr-1"></i> Home
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/explore">
+                        <i class="fa-solid fa-compass mr-1"></i> Explore
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#exampleModal3">
+                        <i class="fa-solid fa-magnifying-glass mr-1"></i> Search
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                        data-bs-whatever="@getbootstrap">
+                        <i class="fa-solid fa-circle-plus mr-1"></i> Create Post
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/profile/{{user}}">
+                        <i class="fa-solid fa-user mr-1"></i> Profile
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/logoutt">
+                        <i class="fa-solid fa-right-from-bracket mr-1"></i> Logout
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <!-- this is the main content code -->
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+            <!-- Your main content goes here -->
+        
+            {% include "modal.html" %}
+            {% include "search.html" %}
+        
+        <!-- home posts code -->
+            <div>{% for pos in post %}
+                <div class="container" id="{{pos.id}}">
+                    <div class="row">
+                        <div class="col-md-6 mx-auto">
+                            <div class="post-card"style="border: 1px solid black;margin: 50px;">
+                                <!-- Badge for Talent of the Month -->
+                                {% if pos.talent == 1 %}
+                                <span class="badge badge-talent" style="position: sticky; bottom: 10px; left: 19px; background-color: red; color: white; font-size: 14px; padding: 15px 10px; border-radius: 2px;">
+                                    Talent of the Month
+                                </span>
+                                {% endif %}
+                                <img src="{{pos.image.url}}" alt="Post Image" class="post-image"
+                                    style="height: 584px; width:468px; margin: 25px;">
+                                <div class="post-content"style="margin-left: 19px;">
+                                    <h5><a href="/profile/{{pos.user}}" style="text-decoration: none;">@{{pos.user}}</a></h5>
+                                    <p>{{pos.caption}}</p>
+                                    <p class="text-muted">{{pos.created_at}}</p>
+                                    <hr>
+                                    <div class="d-flex justify-content-between" style="margin-bottom: 8px; margin-right:10px;">
+                                        <div class="star-rating" data-post-id="{{pos.id}}" data-post-rating="{{pos.rates}}">
+                                            <i class="fa fa-star star" data-value="1"></i>
+                                            <i class="fa fa-star star" data-value="2"></i>
+                                        </div>
+                                        <script>
+                                            document.addEventListener('DOMContentLoaded', function () {
+                                                const starRatingContainers = document.querySelectorAll('.star-rating');
+            
+                                                starRatingContainers.forEach(container => {
+                                                    const initialRating = container.getAttribute('data-post-rating');
+                                                    updateStars(container, initialRating);
+            
+                                                    const stars = container.querySelectorAll('.star');
+                                                    stars.forEach(star => {
+                                                        star.addEventListener('click', function () {
+                                                            const value = this.getAttribute('data-value');
+                                                            const postId = this.parentElement.getAttribute('data-post-id');
+                                                            updateStars(this.parentElement, value);
+                                                            const url = `/rates/${postId}?rating=${value}`;
+                                                            fetch(url, {
+                                                                method: 'GET'
+                                                            }).then(response => {
+                                                                if (response.ok) {
+                                                                    console.log('Rating submitted successfully');
+                                                                } else {
+                                                                    console.error('Error submitting rating');
+                                                                }
+                                                            });
+                                                        });
+                                                    });
+                                                });
+            
+                                                function updateStars(starContainer, value) {
+                                                    const stars = starContainer.querySelectorAll('.star');
+                                                    stars.forEach(star => {
+                                                        if (star.getAttribute('data-value') <= value) {
+                                                            star.classList.add('selected');
+                                                        } else {
+                                                            star.classList.remove('selected');
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                        </script>
+                                        <!-- <script>
+                                            document.addEventListener('DOMContentLoaded', function () {
+                                                const stars = document.querySelectorAll('.star-rating .star');
+                                                const starRatingContainer = document.querySelector('.star-rating');
+                                                
+                                                stars.forEach(star => {
+
+                                                    // Set the initial state of the stars based on the rating
+                                                    //updateStars(starRatingContainer, initialRating);
+                                                    star.addEventListener('click', function () {
+                                                        const value = this.getAttribute('data-value');
+                                                        const postId = this.parentElement.getAttribute('data-post-id');
+                                                        updateStars(this.parentElement, value);
+                                                        const url = `/rates/${postId}?rating=${value}`;
+                                                        fetch(url, {
+                                                            method: 'GET'
+                                                        }).then(response => {
+                                                            if (response.ok) {
+                                                                console.log('Rating submitted successfully');
+                                                            } else {
+                                                                console.error('Error submitting rating');
+                                                            }
+                                                        });
+                                                    });
+                                                });
+                                        
+                                                function updateStars(starContainer, value) {
+                                                    const stars = starContainer.querySelectorAll('.star');
+                                                    stars.forEach(star => {
+                                                        if (star.getAttribute('data-value') <= value) {
+                                                            star.classList.add('selected');
+                                                        } else {
+                                                            star.classList.remove('selected');
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                        </script> -->
+                                        <!-- <a href="/like-post/{{pos.id}}" class="btn btn-outline-primary">Like</a> -->
+            
+                                        {% if pos.no_of_likes == 0 %}
+                                        <p>0</p>
+                                        {% else %}
+                                        <p>{{pos.no_of_likes}} Ratings</p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            
+            </div>
+        
+        
+        </main>
+
+
+    </div>
+</div>
+   
+    <script src="{% static 'js/app.js'%}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

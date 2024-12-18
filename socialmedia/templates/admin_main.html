@@ -1,0 +1,158 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://kit.fontawesome.com/cb792c0850.js" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <title>Social Media</title>
+    <link rel="stylesheet" href="{% static 'css/app.css' %}">
+    <style>
+        /* Custom styles for the sidebar */
+        .sidebar {
+            background-color: #f8f9fa;
+            height: 100vh;
+            color: black;
+        }
+
+        .profile-pic {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        a {
+            color: black;
+        }
+
+        /* Style for the "Generate Talent of the Month" button */
+        .talent-button {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 999;
+            padding: 10px 20px;
+            font-size: 12px;
+        }
+    </style>
+</head>
+
+<body>
+   <!-- this a modal code -->
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 d-none d-md-block sidebar" style="position: fixed;">
+            <div class="text-center mt-3">
+                <img src="{{profile.profileimg.url}}" alt="Profile Picture" class="profile-pic">
+                <h4 class="mt-2"><a style="text-decoration:none;">@{{user}}</a></h4>
+            </div>
+            <ul class="nav flex-column mt-4">
+                <li class="nav-item">
+                    <a class="nav-link active" href="/">
+                        <i class="fa-solid fa-house mr-1"></i> Home
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/denied">
+                        <i class="fa-solid fa-compass mr-1"></i> Denied
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/talents">
+                        <i class="fa-solid fa-compass mr-1"></i> Talents
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#exampleModal3">
+                        <i class="fa-solid fa-magnifying-glass mr-1"></i> Search
+                    </a>
+                </li>
+                <!-- <li class="nav-item">
+                    <a class="nav-link" href="/profile/{{user}}">
+                        <i class="fa-solid fa-user mr-1"></i> Profile
+                    </a>
+                </li> -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/logoutt">
+                        <i class="fa-solid fa-right-from-bracket mr-1"></i> Logout
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        
+        <!-- Main content -->
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+            {% include "modal.html" %}
+            {% include "search.html" %}
+        
+            <div>{% for pos in post %}
+                <div class="container" id="{{pos.id}}">
+                    <div class="row">
+                        <div class="col-md-6 mx-auto">
+                            <div class="post-card"style="border: 1px solid black;margin: 50px;">
+                                <img src="{{pos.image.url}}" alt="Post Image" class="post-image"
+                                    style="height: 584px; width:468px; margin: 25px;">
+                                <div class="post-content"style="margin-left: 19px;">
+                                    <h5><a href="/profile/{{pos.user}}" style="text-decoration: none;">@{{pos.user}}</a></h5>
+                                    <p>{{pos.caption}}</p>
+                                    <p class="text-muted">{{pos.created_at}}</p>
+                                    <hr>
+                                    <div class="d-flex justify-content-between" style="margin-bottom: 8px; margin-right:10px;">
+                                        <a href="/allow/{{pos.id}}" class="btn btn-outline-primary">Allow</a>
+                                        <a href="/deny/{{pos.id}}" class="btn btn-outline-primary">Deny</a>
+                                        {% if pos.no_of_likes == 0 %}
+                                        <p>0</p>
+                                        {% elif pos.no_of_likes == 1 %}
+                                        <p>{{pos.no_of_likes}} Ratings</p>
+                                        {% else %}
+                                        <p>{{pos.no_of_likes}} Ratings</p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            
+            </div>
+        </main>
+    </div>
+</div>
+
+    <!-- Button to generate Talent of the Month -->
+    <button class="btn btn-success talent-button" style="top: auto;" onclick="generateTalent()">Generate Talent of the Month</button>
+   
+    <script src="{% static 'js/app.js'%}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <script>
+        // JavaScript function to handle the button click event
+        function generateTalent() {
+            const url = `/month-talent`;
+            fetch(url, {
+                method: 'GET'
+            }).then(response => {
+                if (response.ok) {
+                    console.log('Talent of the Month generation successfull');
+                } else {
+                    console.error('Error generation of Talent of the Month');
+                }
+            });
+            // You can add logic here to trigger the "Talent of the Month" generation
+            alert("Talent of the Month generation triggered!");
+            // Example: Redirect to a URL or make an AJAX request to calculate and assign the Talent of the Month
+        }
+    </script>
+</body>
+
+</html>

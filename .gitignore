@@ -1,0 +1,7 @@
+/myenv
+/venv
+/socialmedia/media/post_images
+/socialmedia/media/profile_images
+/socialmedia/db.sqlite3
+**/__pycache__/*
+*/*/*/__pycache__/*
