@@ -1,6 +1,6 @@
 # TALENT HUB Platform using Django
 
-![Project Banner]
+![Project Banner](https://raw.githubusercontent.com/irsha-irz/talent-hub/main/socialmedia/media/post_images/show.png)
 
 Welcome to the Talen Hub Platform project built using Django! This project aims to create a basic social media platform for schools and collages where students (users) can register, log in, post images, rate images, connect with friends, and more. The platform provides a foundation that you can extend and customize to create your own unique social media experience.
 
