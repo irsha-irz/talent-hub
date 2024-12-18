@@ -2,7 +2,7 @@
 
 ![Project Banner]
 
-Welcome to the Social Media Platform project built using Django! This project aims to create a basic social media platform where users can register, log in, post updates, connect with friends, and more. The platform provides a foundation that you can extend and customize to create your own unique social media experience.
+Welcome to the Talen Hub Platform project built using Django! This project aims to create a basic social media platform for schools and collages where students (users) can register, log in, post images, rate images, connect with friends, and more. The platform provides a foundation that you can extend and customize to create your own unique social media experience.
 
 ## Table of Contents
 
@@ -38,7 +38,7 @@ Before you begin, ensure you have the following installed:
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/shaheervt/talent-hub.git
+   git clone https://github.com/irsha-irz/talent-hub.git
    ```
 
 2. Navigate to the project directory:
