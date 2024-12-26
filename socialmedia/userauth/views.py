@@ -79,7 +79,7 @@ def home(request):
         current_month = timezone.now().month
         current_year = timezone.now().year
         talent = TalentOfTheMonth.objects.filter(Q (post__in=posts, month=current_month,year=current_year)).first()
-        print(f"talent: {talent.post}")
+        #print(f"talent: {talent.post}")
         for post in posts:
             post_data = {
                 'id': post.id,
@@ -91,7 +91,7 @@ def home(request):
                 'status': post.status,
                 'no_of_likes': post.no_of_likes,
                 'rates': likes_dict.get(post.id, 0),
-                'talent': 1 if talent.post == post else 0,
+                'talent': 1 if talent and (talent.post == post) else 0,
             }
             print(f"post_data: {post_data}")
             final_posts.append(post_data)
