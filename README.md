@@ -41,13 +41,7 @@ Before you begin, ensure you have the following installed:
    git clone https://github.com/irsha-irz/talent-hub.git
    ```
 
-2. Navigate to the project directory:
-
-   ```bash
-   cd social-media
-   ```
-
-3. Create a virtual environment (recommended) if not created already:
+2. Create a virtual environment (recommended) if not created already:
 
    ```bash
    virtualenv venv
@@ -56,7 +50,7 @@ Before you begin, ensure you have the following installed:
    or
    python -m venv venv
 
-4. Activate the virtual environment:
+3. Activate the virtual environment:
 
    - On Windows:
 
@@ -70,12 +64,18 @@ Before you begin, ensure you have the following installed:
      source venv/bin/activate
      ```
 
-5. Install the project dependencies:
+4. Install the project dependencies:
 
    ```bash
    pip install -r requirements.txt
    ```
 
+5. Navigate to the project directory:
+
+   ```bash
+   cd social-media
+   ```
+   
 6. Perform database migrations:
 
    ```bash
